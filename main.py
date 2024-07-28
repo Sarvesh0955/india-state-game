@@ -28,6 +28,9 @@ guessed_state = []
 
 while game_is_one:
     answer = screen.textinput(title=f"Guess the State {count}/{TOTAL_STATE}", prompt="What is another state name?").title()
+    if answer == "Exit":
+        break
+
     if answer in state_dict and answer not in guessed_state:
         tur.goto(state_dict[answer])
         tur.write(answer)
@@ -37,4 +40,11 @@ while game_is_one:
     if count == TOTAL_STATE:
         game_is_one = False
 
-screen.exitonclick()
+remaining_states = []
+for state in state_name:
+    if state not in guessed_state:
+        remaining_states.append(state)
+
+new_data = pandas.DataFrame(remaining_states)
+new_data.to_csv("./remaning_states.csv")
+print(new_data)
